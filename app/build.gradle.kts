@@ -15,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId = "dev.realkc.semesterinfo"
-        minSdk = 34
+        minSdk = 35
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -61,6 +61,7 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.datetime)
+    implementation(libs.androidx.work.runtime.ktx)
 
 
     testImplementation(libs.junit)

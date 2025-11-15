@@ -18,24 +18,28 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.setWidgetPreviews
 import androidx.lifecycle.lifecycleScope
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import dev.realkc.semesterinfo.ui.composables.PinWidget
 import dev.realkc.semesterinfo.ui.theme.SemesterInfoTheme
 import dev.realkc.semesterinfo.widget.Receiver
+import dev.realkc.semesterinfo.widget.UpdateWidgetWorker
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        if (peekAvailableContext() != null) {
+        peekAvailableContext()?.let {
             lifecycleScope.launch {
-                updateWidgetPreview(peekAvailableContext()!!)
+                updateWidgetPreview(it)
             }
+            scheduleWidgetUpdates(it)
         }
 
         setContent {
@@ -64,6 +68,13 @@ class MainActivity : ComponentActivity() {
                 intSetOf(WIDGET_CATEGORY_HOME_SCREEN)
             )
         }
+    }
+
+    fun scheduleWidgetUpdates(context: Context) {
+        val updateRequest = PeriodicWorkRequestBuilder<UpdateWidgetWorker>(12, TimeUnit.HOURS)
+            .build()
+
+        WorkManager.getInstance(context).enqueue(updateRequest)
     }
 }
 
