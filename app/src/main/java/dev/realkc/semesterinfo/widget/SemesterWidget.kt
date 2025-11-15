@@ -10,6 +10,7 @@ import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 
 import androidx.glance.appwidget.GlanceAppWidget
+import androidx.glance.appwidget.components.Scaffold
 import androidx.glance.appwidget.provideContent
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
@@ -35,6 +36,16 @@ class SemesterWidget : GlanceAppWidget() {
                 TextColorProvider { color ->
                     MyContent(info, textColor = color)
                 }
+            }
+        }
+    }
+
+    override suspend fun providePreview(context: Context, widgetCategory: Int) {
+        val info = weekInfo(context.resources, R.raw.msc)
+
+        provideContent {
+            GlanceTheme {
+                MyContent(info, textColor = Color.Black)
             }
         }
     }

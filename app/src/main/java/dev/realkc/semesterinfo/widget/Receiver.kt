@@ -6,4 +6,6 @@ import androidx.glance.appwidget.GlanceAppWidgetReceiver
 class Receiver : GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget
         get() = SemesterWidget()
+
+
 }
