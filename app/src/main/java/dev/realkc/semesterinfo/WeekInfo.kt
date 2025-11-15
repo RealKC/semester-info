@@ -24,22 +24,33 @@ class WeekInfo(yearInfo: YearInfo) {
     init {
         val currentDay = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 
-        var weekCount = 1L
+        val semester = if (yearInfo.semesterOneDateRange.contains(currentDay))
+                yearInfo.semesterOne
+            else if (yearInfo.semesterTwoDateRange.contains(currentDay))
+                yearInfo.semesterTwo
+            else null
 
-        for (weekBlock in yearInfo.semesterOne) {
-            if (weekBlock.dateRange.contains(currentDay)) {
-                when (weekBlock) {
-                    is WeekBlock.Classes -> {
-                        currentWeek = weekCount + weeksBetween(weekBlock.start, currentDay)
+        if (semester == null) {
+            isHoliday = true
+        } else {
+            var weekCount = 1L
+
+            for (weekBlock in semester) {
+                if (weekBlock.dateRange.contains(currentDay)) {
+                    when (weekBlock) {
+                        is WeekBlock.Classes -> {
+                            currentWeek = weekCount + weeksBetween(weekBlock.start, currentDay)
+                        }
+
+                        is WeekBlock.Holiday -> {
+                            isHoliday = true
+                        }
                     }
-                    is WeekBlock.Holiday -> {
-                        isHoliday = true
+                    break
+                } else {
+                    if (weekBlock is WeekBlock.Classes) {
+                        weekCount += weeksBetween(weekBlock.start, weekBlock.end)
                     }
-                }
-                break
-            } else {
-                if (weekBlock is WeekBlock.Classes) {
-                    weekCount += weeksBetween(weekBlock.start, weekBlock.end)
                 }
             }
         }
