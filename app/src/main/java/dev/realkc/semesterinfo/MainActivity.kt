@@ -3,21 +3,26 @@ package dev.realkc.semesterinfo
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProviderInfo.WIDGET_CATEGORY_HOME_SCREEN
 import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.collection.intSetOf
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.setWidgetPreviews
 import androidx.lifecycle.lifecycleScope
+import dev.realkc.semesterinfo.ui.composables.PinWidget
 import dev.realkc.semesterinfo.ui.theme.SemesterInfoTheme
 import dev.realkc.semesterinfo.widget.Receiver
 import kotlinx.coroutines.launch
@@ -36,8 +41,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             SemesterInfoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
+                    MainActivityContents(
+                        resources = resources,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -63,17 +68,21 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun MainActivityContents(resources: Resources,  modifier: Modifier = Modifier) {
+    val week = weekInfo(resources, R.raw.msc)
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SemesterInfoTheme {
-        Greeting("Android")
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = week.description,
+            modifier = modifier
+
+        )
+
+        PinWidget()
     }
+
 }

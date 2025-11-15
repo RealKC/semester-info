@@ -51,6 +51,9 @@ class WeekInfo(yearInfo: YearInfo) {
 
         return aj.until(bj.plusDays(1), ChronoUnit.WEEKS)
     }
+
+    val description: String
+        get() = if (isHoliday) "Holiday week" else "Week ${currentWeek}"
 }
 
 fun weekInfo(resources: Resources, @RawRes id: Int): WeekInfo {
