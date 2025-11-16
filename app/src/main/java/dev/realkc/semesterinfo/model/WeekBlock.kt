@@ -25,6 +25,20 @@ sealed class WeekBlock(
         override val end: LocalDate
     ) : WeekBlock()
 
+    @Serializable
+    @SerialName("exams")
+    class Exams(
+        override val start: LocalDate,
+        override val end: LocalDate
+    ) : WeekBlock()
+
+    @Serializable
+    @SerialName("reexam")
+    class Reexams(
+        override val start: LocalDate,
+        override val end: LocalDate
+    ) : WeekBlock()
+
     val dateRange: LocalDateRange
         get() = LocalDateRange(start, end)
 }

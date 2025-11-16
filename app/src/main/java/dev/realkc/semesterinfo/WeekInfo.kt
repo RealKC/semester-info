@@ -18,6 +18,12 @@ class WeekInfo(yearInfo: YearInfo) {
     var isHoliday: Boolean = false
         private set
 
+    var isExams: Boolean = false
+        private set
+
+    var isReexams: Boolean = false
+        private set
+
     var currentWeek: Long = 0
         private set
 
@@ -45,6 +51,14 @@ class WeekInfo(yearInfo: YearInfo) {
                         is WeekBlock.Holiday -> {
                             isHoliday = true
                         }
+
+                        is WeekBlock.Exams -> {
+                            isExams = true
+                        }
+
+                        is WeekBlock.Reexams -> {
+                            isReexams = true
+                        }
                     }
                     break
                 } else {
@@ -64,7 +78,10 @@ class WeekInfo(yearInfo: YearInfo) {
     }
 
     val description: String
-        get() = if (isHoliday) "Holiday week" else "Week ${currentWeek}"
+        get() = if (isHoliday) "Holiday week"
+                else if (isExams) "Exams session :("
+                else if (isReexams) "Restanțe =((("
+                else "Week $currentWeek"
 }
 
 fun weekInfo(resources: Resources, @RawRes id: Int): WeekInfo {
