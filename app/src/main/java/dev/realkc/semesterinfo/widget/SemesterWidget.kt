@@ -54,7 +54,7 @@ class SemesterWidget : GlanceAppWidget() {
 
         Column(
             modifier = GlanceModifier.fillMaxSize(),
-            verticalAlignment = Alignment.Top,
+            verticalAlignment = Alignment.CenterVertically,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
