@@ -8,7 +8,6 @@ import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
-
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
 import androidx.glance.layout.Alignment
@@ -25,9 +24,11 @@ import dev.realkc.semesterinfo.WeekInfo
 import dev.realkc.semesterinfo.weekInfo
 import dev.realkc.semesterinfo.widget.composables.TextColorProvider
 
-
 class SemesterWidget : GlanceAppWidget() {
-    override suspend fun provideGlance(context: Context, id: GlanceId) {
+    override suspend fun provideGlance(
+        context: Context,
+        id: GlanceId,
+    ) {
         val info = weekInfo(context.resources, R.raw.msc)
 
         provideContent {
@@ -39,7 +40,10 @@ class SemesterWidget : GlanceAppWidget() {
         }
     }
 
-    override suspend fun providePreview(context: Context, widgetCategory: Int) {
+    override suspend fun providePreview(
+        context: Context,
+        widgetCategory: Int,
+    ) {
         val info = weekInfo(context.resources, R.raw.msc)
 
         provideContent {
@@ -50,22 +54,25 @@ class SemesterWidget : GlanceAppWidget() {
     }
 
     @Composable
-    private fun MyContent(week: WeekInfo, textColor: Color) {
-
+    private fun MyContent(
+        week: WeekInfo,
+        textColor: Color,
+    ) {
         Column(
             modifier = GlanceModifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = week.description,
-                style = TextStyle(
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 32.sp,
-                    color = ColorProvider(textColor),
-                    fontWeight = FontWeight.Bold
-                ),
-                modifier = GlanceModifier.padding(12.dp)
+                style =
+                    TextStyle(
+                        fontFamily = FontFamily.Monospace,
+                        fontSize = 32.sp,
+                        color = ColorProvider(textColor),
+                        fontWeight = FontWeight.Bold,
+                    ),
+                modifier = GlanceModifier.padding(12.dp),
             )
         }
     }

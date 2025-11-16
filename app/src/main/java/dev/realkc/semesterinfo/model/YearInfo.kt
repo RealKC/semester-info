@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class YearInfo(
     val semesterOne: List<WeekBlock>,
-    val semesterTwo: List<WeekBlock>
+    val semesterTwo: List<WeekBlock>,
 ) {
     val semesterOneDateRange: LocalDateRange
         get() = semesterOne.first().start.rangeTo(semesterOne.last().end)

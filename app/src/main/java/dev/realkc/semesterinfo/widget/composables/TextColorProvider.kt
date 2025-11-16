@@ -13,33 +13,32 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.glance.LocalContext
 
-
 /**
  * Provides composables with a text color appropriate that will be readable against the wallpaper
  *
  * Based on code from here: https://proandroiddev.com/widgets-with-glance-standing-out-33834eee2dee
  */
 @Composable
-fun TextColorProvider(
-    content: @Composable (Color) -> Unit
-) {
+fun TextColorProvider(content: @Composable (Color) -> Unit) {
     val wallpaperManager = WallpaperManager.getInstance(LocalContext.current)
     val colors = wallpaperManager.getWallpaperColors(FLAG_SYSTEM)
     var useDarkColor by remember {
         mutableStateOf(
-            getUseDarkColor(colors)
+            getUseDarkColor(colors),
         )
     }
 
     DisposableEffect(wallpaperManager) {
-        val listener = WallpaperManager.OnColorsChangedListener { colors, _ ->
-            getUseDarkColor(colors).let {
-                useDarkColor = it
+        val listener =
+            WallpaperManager.OnColorsChangedListener { colors, _ ->
+                getUseDarkColor(colors).let {
+                    useDarkColor = it
+                }
             }
-        }
 
-        wallpaperManager.addOnColorsChangedListener(listener,
-            android.os.Handler(Looper.getMainLooper())
+        wallpaperManager.addOnColorsChangedListener(
+            listener,
+            android.os.Handler(Looper.getMainLooper()),
         )
 
         onDispose {
@@ -50,4 +49,5 @@ fun TextColorProvider(
     content.invoke(if (useDarkColor) Color.Black else Color.White)
 }
 
-fun getUseDarkColor(colors: WallpaperColors?): Boolean = colors != null && (colors.colorHints and WallpaperColors.HINT_SUPPORTS_DARK_TEXT) != 0
+fun getUseDarkColor(colors: WallpaperColors?): Boolean =
+    colors != null && (colors.colorHints and WallpaperColors.HINT_SUPPORTS_DARK_TEXT) != 0

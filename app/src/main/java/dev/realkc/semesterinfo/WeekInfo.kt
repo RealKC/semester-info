@@ -14,7 +14,9 @@ import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
-class WeekInfo(yearInfo: YearInfo) {
+class WeekInfo(
+    yearInfo: YearInfo,
+) {
     var isHoliday: Boolean = false
         private set
 
@@ -28,13 +30,20 @@ class WeekInfo(yearInfo: YearInfo) {
         private set
 
     init {
-        val currentDay = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        val currentDay =
+            Clock.System
+                .now()
+                .toLocalDateTime(TimeZone.currentSystemDefault())
+                .date
 
-        val semester = if (yearInfo.semesterOneDateRange.contains(currentDay))
+        val semester =
+            if (yearInfo.semesterOneDateRange.contains(currentDay)) {
                 yearInfo.semesterOne
-            else if (yearInfo.semesterTwoDateRange.contains(currentDay))
+            } else if (yearInfo.semesterTwoDateRange.contains(currentDay)) {
                 yearInfo.semesterTwo
-            else null
+            } else {
+                null
+            }
 
         if (semester == null) {
             isHoliday = true
@@ -70,7 +79,10 @@ class WeekInfo(yearInfo: YearInfo) {
         }
     }
 
-    private fun weeksBetween(a: LocalDate, b: LocalDate): Long {
+    private fun weeksBetween(
+        a: LocalDate,
+        b: LocalDate,
+    ): Long {
         val aj = a.toJavaLocalDate()
         val bj = b.toJavaLocalDate()
 
@@ -78,13 +90,22 @@ class WeekInfo(yearInfo: YearInfo) {
     }
 
     val description: String
-        get() = if (isHoliday) "Holiday week"
-                else if (isExams) "Exams session :("
-                else if (isReexams) "Restanțe =((("
-                else "Week $currentWeek"
+        get() =
+            if (isHoliday) {
+                "Holiday week"
+            } else if (isExams) {
+                "Exams session :("
+            } else if (isReexams) {
+                "Restanțe =((("
+            } else {
+                "Week $currentWeek"
+            }
 }
 
-fun weekInfo(resources: Resources, @RawRes id: Int): WeekInfo {
+fun weekInfo(
+    resources: Resources,
+    @RawRes id: Int,
+): WeekInfo {
     val rawInfo = String(resources.openRawResource(R.raw.msc).readAllBytes())
     val yearInfo = Json.decodeFromString<YearInfo>(rawInfo)
     return WeekInfo(yearInfo)

@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MainActivityContents(
                         resources = resources,
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding),
                     )
                 }
             }
@@ -57,43 +57,47 @@ class MainActivity : ComponentActivity() {
     suspend fun updateWidgetPreview(context: Context) {
         // Based on https://github.com/android/socialite/pull/129/files#r2001873677
 
-        val installedProviders = context.getSystemService(AppWidgetManager::class.java)
-            .installedProviders
-        val providerInfo = installedProviders.firstOrNull {
-            it.provider.className == Receiver::class.qualifiedName
-        } ?: return // can also log here if provider isn't found
+        val installedProviders =
+            context
+                .getSystemService(AppWidgetManager::class.java)
+                .installedProviders
+        val providerInfo =
+            installedProviders.firstOrNull {
+                it.provider.className == Receiver::class.qualifiedName
+            } ?: return // can also log here if provider isn't found
         if (providerInfo.generatedPreviewCategories == 0) {
             val glanceAppWidgetManager = GlanceAppWidgetManager(context)
             glanceAppWidgetManager.setWidgetPreviews<Receiver>(
-                intSetOf(WIDGET_CATEGORY_HOME_SCREEN)
+                intSetOf(WIDGET_CATEGORY_HOME_SCREEN),
             )
         }
     }
 
     fun scheduleWidgetUpdates(context: Context) {
-        val updateRequest = PeriodicWorkRequestBuilder<UpdateWidgetWorker>(12, TimeUnit.HOURS)
-            .build()
+        val updateRequest =
+            PeriodicWorkRequestBuilder<UpdateWidgetWorker>(12, TimeUnit.HOURS)
+                .build()
 
         WorkManager.getInstance(context).enqueue(updateRequest)
     }
 }
 
 @Composable
-fun MainActivityContents(resources: Resources,  modifier: Modifier = Modifier) {
+fun MainActivityContents(
+    resources: Resources,
+    modifier: Modifier = Modifier,
+) {
     val week = weekInfo(resources, R.raw.msc)
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Text(
             text = week.description,
-            modifier = modifier
-
         )
 
         PinWidget()
     }
-
 }
