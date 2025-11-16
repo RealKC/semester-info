@@ -1,0 +1,36 @@
+name: Build APK
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: Run spotless
+        run: ./gradlew spotlessCheck --warning-mode all
+
+      - name: Build app
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v5
+        with:
+          name: SemesterInfo
+          path: app/build/outputs/apk/debug/app-debug.apk
