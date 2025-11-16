@@ -74,7 +74,7 @@ class WeekInfo(yearInfo: YearInfo) {
         val aj = a.toJavaLocalDate()
         val bj = b.toJavaLocalDate()
 
-        return aj.until(bj.plusDays(1), ChronoUnit.WEEKS)
+        return aj.until(bj, ChronoUnit.WEEKS)
     }
 
     val description: String
