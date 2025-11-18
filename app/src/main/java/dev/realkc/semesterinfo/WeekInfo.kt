@@ -13,9 +13,9 @@ import java.time.temporal.ChronoUnit
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalTime::class)
 class WeekInfo(
     yearInfo: YearInfo,
+    currentDay: LocalDate = now(),
 ) {
     var isHoliday: Boolean = false
         private set
@@ -30,12 +30,6 @@ class WeekInfo(
         private set
 
     init {
-        val currentDay =
-            Clock.System
-                .now()
-                .toLocalDateTime(TimeZone.currentSystemDefault())
-                .date
-
         val semester =
             if (yearInfo.semesterOneDateRange.contains(currentDay)) {
                 yearInfo.semesterOne
@@ -101,6 +95,13 @@ class WeekInfo(
                 "Week $currentWeek"
             }
 }
+
+@OptIn(ExperimentalTime::class)
+private fun now(): LocalDate =
+    Clock.System
+        .now()
+        .toLocalDateTime(TimeZone.currentSystemDefault())
+        .date
 
 fun weekInfo(
     resources: Resources,
