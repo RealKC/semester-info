@@ -10,6 +10,8 @@ import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.padding
+import androidx.glance.semantics.semantics
+import androidx.glance.semantics.testTag
 import androidx.glance.text.FontFamily
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
@@ -37,7 +39,7 @@ fun WeekInfoDisplay(
                     color = ColorProvider(textColor),
                     fontWeight = FontWeight.Bold,
                 ),
-            modifier = GlanceModifier.padding(12.dp),
+            modifier = GlanceModifier.padding(12.dp).semantics { testTag = "contentArea" },
         )
     }
 }
