@@ -107,7 +107,7 @@ fun weekInfo(
     resources: Resources,
     @RawRes id: Int,
 ): WeekInfo {
-    val rawInfo = String(resources.openRawResource(R.raw.msc).readAllBytes())
+    val rawInfo = String(resources.openRawResource(id).readAllBytes())
     val yearInfo = Json.decodeFromString<YearInfo>(rawInfo)
     return WeekInfo(yearInfo)
 }
