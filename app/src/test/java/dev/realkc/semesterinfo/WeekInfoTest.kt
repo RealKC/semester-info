@@ -34,7 +34,12 @@ class WeekInfoTest {
                         end = LocalDate(2026, 2, 28),
                     ),
                 ),
-            semesterTwo = listOf(),
+            semesterTwo =
+                listOf(
+                    WeekBlock.Classes(LocalDate(2026, 2, 16), end = LocalDate(2026, 4, 9)),
+                    WeekBlock.Holiday(LocalDate(2026, 4, 10), end = LocalDate(2026, 4, 19)),
+                    WeekBlock.Classes(LocalDate(2026, 4, 20), end = LocalDate(2026, 5, 31)),
+                ),
         )
 
     @Test
@@ -64,6 +69,11 @@ class WeekInfoTest {
     @Test
     fun `holidays, exams and reexams are not counted as semester weeks in week counting`() {
         assertEquals(1, WeekInfo(yearInfo, LocalDate(2025, 11, 1)).currentWeek)
-        assertEquals(4, WeekInfo(yearInfo, LocalDate(2026, 2, 1)).currentWeek)
+        assertEquals(5, WeekInfo(yearInfo, LocalDate(2026, 2, 1)).currentWeek)
+    }
+
+    @Test
+    fun `weeks after holidays are correctly counted`() {
+        assertEquals(9, WeekInfo(yearInfo, LocalDate(2026, 4, 22)).currentWeek)
     }
 }

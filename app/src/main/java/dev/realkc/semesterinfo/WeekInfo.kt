@@ -66,7 +66,7 @@ class WeekInfo(
                     break
                 } else {
                     if (weekBlock is WeekBlock.Classes) {
-                        weekCount += weeksBetween(weekBlock.start, weekBlock.end)
+                        weekCount += weeksBetween(weekBlock.start, weekBlock.end) + 1
                     }
                 }
             }
